@@ -21,11 +21,10 @@ def modfified_SIRD(part,coef,population,t):
     d_part[1] = tau*A+gamma*E-delta*I
     d_part[2] = lambda_0*np.exp(-lambda_1*t)*Q
     d_part[3] = k_0*np.exp(-k_1*t)*Q
-    d_part[4] = a*S-eta*C
+    d_part[4] = a*S-mu*C
     d_part[5] = -gamma*E+B*I*S/population+mu*C+eta*S+sigma*S*A/population-xi*E
     d_part[6] = -tau*A+xi*E
     d_part[7] = -lambda_0*np.exp(-lambda_1*t)*Q-k_0*np.exp(-k_1*t)*Q+delta*I
-    #print(f'd{d_part}')
     return d_part
 
 
