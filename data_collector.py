@@ -1,4 +1,4 @@
-#This file takes the data from a file that contains the total infected, the dead, and the recovered and then returns it as a numpy array
+ #This file takes the data from a file that contains the total infected, the dead, and the recovered and then returns it as a numpy array
 #Note that the data is cut as at some point, the recovered data was no longer kept track of
 import csv
 import numpy as np

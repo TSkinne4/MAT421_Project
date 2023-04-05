@@ -5,7 +5,8 @@ import time
 
 def difference(data,model,parameter_num,points):
     '''Finds the error between the data an the model, Comparing only S,I,R, and D'''
-    diff = np.sum(np.power(model[0:4,:]-data[0:4,:],2))
+    #diff = np.sum(np.power(model[0:4,:]-data[0:4,:],2))
+    diff = np.sum(np.power(model[:,:]-data[:,:],2))
     error = np.sqrt(np.abs(diff)/np.sqrt(points-parameter_num))
     return error
 
@@ -46,9 +47,9 @@ def find_min(func,data,guess,initial,iterations,tol,days,growth):
         if current_error < tol: #Runs until our error is less than this value
             print(f'{i}\t {current_error}')
             break
-        if True:#i%50 == 0:
-            #print(f'{i}\t {current_error}')
-            print(current)
+        if i%50 == 0:
+            print(f'{i}\t {current_error}')
+            #print(current)
         if (np.sum(np.power(der-past_der,2))) == 0:
             print("Aborted")
             break
@@ -61,6 +62,8 @@ def find_min(func,data,guess,initial,iterations,tol,days,growth):
     return current
 
 if __name__ == '__main__':
+
+    #Menu of options
 
     '''t1 = time.time()
     coefficients = np.array([.912,.216,.035])
