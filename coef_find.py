@@ -47,11 +47,11 @@ def find_min(func,data,guess,initial,iterations,tol,days,growth):
         if current_error < tol: #Runs until our error is less than this value
             print(f'{i}\t {current_error}')
             break
-        if i%50 == 0:
-            print(f'{i}\t {current_error}')
+        if i%100 == 0:
+            print(f'Iteration:{i}\tCurrent error: {current_error}')
             #print(current)
         if (np.sum(np.power(der-past_der,2))) == 0:
-            print("Aborted")
+            print("Aborted due to too small a change")
             break
         growth = np.abs(np.dot(current-past,der-past_der))/(np.sum(np.power(der-past_der,2))) #updating growth term
 
@@ -95,18 +95,18 @@ if __name__ == '__main__':
     coefficients = [0.012,0.7,0.06,0.01,0.1,0.1,0.5,0.72,0.8,0.2,0.01,0.035,0.02]
     initial = np.array([3e6,1.0,0.0,0.0,0.0,1.0,0.0,1.0])
     days = 100
-    data = SIR.generate_test_data(SIR.modfified_SIRD,coefficients,initial,days,100)
+    data = SIR.generate_test_data(SIR.modified_SIRD,coefficients,initial,days,100)
     #guess = 0.5*np.ones(13,dtype = 'float64')
     guess = np.array([0.02,0.4,0.04,0.04,0.6,0.7,0.6,0.42,0.4,0.4,0.05,0.03,0.01])
     pop = np.sum(initial)
     #guess[0] = -(data[0,2]-data[0,0])/2*pop/(data[0,1]*data[1,1])
     #guess[1] = (data[2,2]-data[2,0])/(2*data[1,1])
     #guess[2] = (data[3,2]-data[3,0])/(2*data[1,1])
-    guess = find_min(SIR.modfified_SIRD,data,guess,initial,1e3,1e2,days,1e-6)
+    guess = find_min(SIR.modified_SIRD,data,guess,initial,1e3,1e2,days,1e-6)
     print(f'guess:{guess}')
     t2 = time.time()
 
-    solve = SIR.generate_test_data(SIR.modfified_SIRD,guess,initial,100,100)
+    solve = SIR.generate_test_data(SIR.modified_SIRD,guess,initial,100,100)
     dates = np.arange(100)
 
     plt.plot(dates,solve[0,:])

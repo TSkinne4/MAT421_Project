@@ -10,7 +10,7 @@ def SIRD(partitions,coefficients,population,t):
     d_part[3] = coefficients[2]*partitions[1] #dD/dt
     return d_part
 
-def modfified_SIRD(part,coef,population,t):
+def modified_SIRD(part,coef,population,t):
     """Coeffients = [a,B,sigma,eta,mu,xi,tau,gamma,delta,lambda_0,lambda_1,k_0,k_1]
         X = [S,I,R,D,C,E,A,Q]
     """
