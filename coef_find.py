@@ -37,9 +37,9 @@ def find_min(func,data,guess,initial,iterations,tol,days,growth):
     der = find_derivative(func,initial,current,data,days,growth)
 
     past = current[:]
-    print(current)
+    #print(current)
     current = current/0.5*0.25
-    print(current)
+    #print(current)
     i = 1
     while i <= iterations:
         past_der = der[:] #Stores previous derivative and updates

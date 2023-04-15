@@ -44,8 +44,8 @@ def compartmental_SIRD(part,coef,population,t):
     d_vec = np.array([[1],[d1],[d2],[d1*d2]])
     B = B*d_vec
 
-    lambda_0 = np.array([lambda_0,lambda_0,lambda_0*f,lambda_0*f])
-    k = np.array([k_0*g,k_0*g,k_0,k_0])
+    lambda_0 = np.array([lambda_0*f,lambda_0*f,lambda_0,lambda_0])
+    k = np.array([k_0,k_0,g*k_0,g*k_0])
 
     d_part = np.zeros(10,dtype = 'float64')
     for i in range(4):
