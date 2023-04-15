@@ -27,6 +27,38 @@ def modified_SIRD(part,coef,population,t):
     d_part[7] = -lambda_0*np.exp(-lambda_1*t)*Q-k_0*np.exp(-k_1*t)*Q+delta*I
     return d_part
 
+def compartmental_SIRD(part,coef,population,t):
+    """Coeffients = [B,lambda,k,c1,c2,d1,d2,f,g]
+        X = [S0,S1,S2,S3,I0,I1,I2,I3,R,D]
+    """
+    B,lambda_0,k_0,c1,c2,d1,d2,f,g = coef[0],coef[1],coef[2],coef[3],coef[4],coef[5],coef[6],coef[7],coef[8]
+    S = part[:4]
+    I = part[4:8]
+    R = part[8]
+    D = part[9]
+    d_part = np.zeros(10,dtype = 'float64')
+
+    B = np.ones((4,4),dtype = 'float64')
+    c_vec = np.array([1,c1,c2,c1*c2])
+    B = B*c_vec
+    d_vec = np.array([[1],[d1],[d2],[d1*d2]])
+    B = B*d_vec
+
+    lambda_0 = np.array([lambda_0,lambda_0,lambda_0*f,lambda_0*f])
+    k = np.array([k_0*g,k_0*g,k_0,k_0])
+
+    d_part = np.zeros(10,dtype = 'float64')
+    for i in range(4):
+        for j in range(4):
+            d_part[i] -= S[i]*B[i,j]*I[j]/population
+            d_part[i+4] += S[i]*B[i,j]*I[j]/population
+        d_part[i+4] += (-lambda_0[i]-k[i])*I[i]
+        d_part[8] += lambda_0[i]*I[i]
+        d_part[9] += k[i]*I[i]
+
+    return d_part
+
+
 
 def generate_SIRD_curves(func,coefficients,initial,days):
     """Generates an SIRD curve from initial conditions"""
@@ -40,17 +72,7 @@ def generate_SIRD_curves(func,coefficients,initial,days):
         k4 = func(curves[:,i-1]+k3,coefficients,population,i+1)
 
         curves[:,i] = curves[:,i-1]+(k1+2*k2+2*k3+k4)/6
-        #for j in range(len(curves[:,i])):
-        #    if curves[j,i] < 0:
-        #        curves[j,i] = 0
-        #print(f'c{curves[:,i]}')
         error = (np.sum(curves[:,i])/population-1)*100
         difference = np.sum(curves[:,i])-population
-        #print(f'{difference}\t{error}')
 
     return curves
-
-def generate_test_data(func,coefficients,initial,days,strength):
-    data = generate_SIRD_curves(func,coefficients,initial,days)
-    #data += random.randint(np.max(data)/strength,size = np.shape(data))
-    return data
